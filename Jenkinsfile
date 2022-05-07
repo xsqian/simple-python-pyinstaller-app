@@ -7,7 +7,7 @@ pipeline {
         stage('Build') { 
             agent {
                 docker {
-                    image 'python:3.8' 
+                    image 'mlrun/mlrun:1.0.0' 
                 }
             }
             steps {
