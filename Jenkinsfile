@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    enevironment {
+    environment {
         RELEASE='20.04'
     } 
     stages {
@@ -18,13 +18,13 @@ pipeline {
         stage('Test') {
             steps {
                 echo "Testing release ${RELEASE}"
-            }
-            script {
-                if (Math.random() > 0.01) {
-                    throw new Exception()
+                script {
+                    if (Math.random() > 0.01) {
+                        throw new Exception()
+                    }
                 }
+                writeFile file: 'test-results.txt', text: 'passed'
             }
-            writeFile file: 'test-results.txt', text: 'passed'
         }
     }
 }
