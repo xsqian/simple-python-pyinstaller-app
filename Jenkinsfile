@@ -19,12 +19,25 @@ pipeline {
             steps {
                 echo "Testing release ${RELEASE}"
                 script {
-                    if (Math.random() > 0.01) {
+                    if (Math.random() > 0.99) {
                         throw new Exception()
                     }
                 }
                 writeFile file: 'test-results.txt', text: 'passed'
             }
+        }
+    }
+    post {
+        success {
+            archiveArtifacts 'test-results.txt'
+            slackSend channel: '#builds',
+                        color: 'good',
+                        message: "Release ${env.RELEASE}, success: ${currentBuild.fullDisplayName}."
+        }
+        failure {
+            slackSend channel: '#builds',
+                        color: 'danger',
+                        message: "Release ${env.RELEASE}, FAILD: ${currentBuild.fullDisplayName}."
         }
     }
 }
